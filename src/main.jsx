@@ -7,10 +7,10 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <CourseProvider>
+    <HashRouter>                      
+      <CourseProvider>                  
         <App />
       </CourseProvider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
