@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CourseCtx } from "./course-context";
+import * as api from "../api/courses";
 
 const LOCAL_KEY = "sb-data-v1";
 
@@ -7,30 +8,32 @@ export default function CourseProvider({ children }) {
   const [courses, setCourses] = useState([]);
   const [schedule, setSchedule] = useState([]); // array of course ids
 
-  useEffect(() => {
-    const raw = localStorage.getItem(LOCAL_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      setCourses(parsed.courses ?? []);
-      setSchedule(parsed.schedule ?? []);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const raw = localStorage.getItem(LOCAL_KEY);
+  //   if (raw) {
+  //     const parsed = JSON.parse(raw);
+  //     setCourses(parsed.courses ?? []);
+  //     setSchedule(parsed.schedule ?? []);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify({ courses, schedule }));
+    fetchCourses();
   }, [courses, schedule]);
 
+  const fetchCourses = () => api.fetchCourses().then(setCourses);
+
   const addCourse = (course) => {
-    const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
-    const credits = Number(course.credits);
-    setCourses((prev) => [...prev, { ...course, id, credits }]);
-    return id;
+    console.log(course);
+    api.createCourse(course).then((saved) => setCourses((prev) => [...prev, saved]));
   };
   const editCourse = (id, patch) =>
-    setCourses((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+    api
+      .updateCourse(id, patch)
+      .then((saved) => setCourses((prev) => prev.map((c) => (c.id === id ? saved : c))));
   const deleteCourse = (id) => {
-    setCourses((prev) => prev.filter((c) => c.id !== id));
-    setSchedule((prev) => prev.filter((cid) => cid !== id));
+    api.deleteCourse(id)
+    fetchCourses();
   };
 
   const addToSchedule = (id) =>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Home() {
     return (
       <section>
@@ -6,7 +8,7 @@ export default function Home() {
           Use the navigation above to view courses or add
           a new course. Separate this into student/teacher in Stage 2.
         </p>
-        <a className="cta" href="/courses">Browse Courses</a>
+        <Link className="cta" to="/courses">Browse Courses</Link>
       </section>
     );
   }

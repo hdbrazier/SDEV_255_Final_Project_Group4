@@ -7,7 +7,7 @@ export default function AddCourse() {
   const nav = useNavigate();
   const [form, setForm] = useState({
     subject: "",
-    name: "",
+    course: "",
     description: "",
     credits: 3,
   });
@@ -19,7 +19,10 @@ export default function AddCourse() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!form.subject || !form.name || !form.description || !form.credits) return;
+    if (!form.subject || !form.course || !form.description || !form.credits) {
+      alert("All fields are required.");
+      return;
+    };
     addCourse(form);
     nav("/courses"); // go to Courses list after adding
   };
@@ -34,7 +37,7 @@ export default function AddCourse() {
         </label>
         <label>
           Course
-          <input name="name" value={form.name} onChange={onChange} placeholder="e.g., Website Development" required />
+          <input name="course" value={form.course} onChange={onChange} placeholder="e.g., Website Development" required />
         </label>
         <label>
           Description
