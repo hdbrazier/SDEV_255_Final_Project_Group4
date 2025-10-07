@@ -9,6 +9,7 @@ export default function Home() {
           a new course. Separate this into student/teacher in Stage 2.
         </p>
         <Link className="cta" to="/courses">Browse Courses</Link>
+        
       </section>
     );
   }
